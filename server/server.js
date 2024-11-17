@@ -20,13 +20,15 @@ app.use('/api/bookings/' , require('./routes/bookingsRoute'))
 const path = require('path');
 const { SystemModule } = require('@faker-js/faker');
 
-if (process.env.NODE_ENV === 'production') {
-  // Set static folder
-  app.use('/', express.static('client/build'));
+const path = require('path');
 
+// Serve static files from the React frontend app
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle any other routes and send back index.html
   app.get('*', (req, res) => {
-      // Serve index.html for all other routes
-      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
 
